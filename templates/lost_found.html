@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CampusMate - Lost & Found</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #050505;
+            color: white;
+        }
+
+        nav {
+            background: #0a0a0a;
+            border-bottom: 1px solid #222;
+            padding: 18px 7%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            color: #00ff88;
+            font-size: 27px;
+            font-weight: bold;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .nav-links a:hover {
+            color: #00ff88;
+        }
+
+        .logout {
+            border: 1px solid #00ff88;
+            padding: 9px 16px;
+            border-radius: 7px;
+            color: #00ff88 !important;
+        }
+
+        .page {
+            padding: 45px 7%;
+        }
+
+        .header {
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 38px;
+        }
+
+        .header h1 span {
+            color: #00ff88;
+        }
+
+        .header p {
+            color: #999;
+            margin-top: 10px;
+        }
+
+        .post-box {
+            background: #101010;
+            border: 1px solid #242424;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 35px;
+        }
+
+        .post-box h2 {
+            margin-bottom: 20px;
+            color: #00ff88;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 7px;
+            font-size: 14px;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px;
+            background: #171717;
+            border: 1px solid #303030;
+            border-radius: 7px;
+            color: white;
+            outline: none;
+        }
+
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            border-color: #00ff88;
+        }
+
+        .submit-btn {
+            margin-top: 5px;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 7px;
+            background: #00ff88;
+            color: #000;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .items {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .item {
+            background: #101010;
+            border: 1px solid #242424;
+            padding: 25px;
+            border-radius: 15px;
+        }
+
+        .item h2 {
+            color: #00ff88;
+            margin-bottom: 10px;
+        }
+
+        .item p {
+            color: #999;
+            line-height: 1.6;
+            margin-bottom: 8px;
+        }
+
+        .status {
+            display: inline-block;
+            margin-top: 10px;
+            background: #173326;
+            color: #00ff88;
+            padding: 6px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+        }
+
+        footer {
+            margin-top: 50px;
+            padding: 22px;
+            text-align: center;
+            color: #777;
+            background: #090909;
+            border-top: 1px solid #222;
+        }
+
+        @media (max-width: 700px) {
+            nav {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .items {
+                grid-template-columns: 1fr;
+            }
+
+            .page {
+                padding: 30px 5%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav>
+        <div class="logo">CampusMate</div>
+
+        <div class="nav-links">
+            <a href="/dashboard">Dashboard</a>
+            <a href="/events">Events</a>
+            <a href="/notices">Notices</a>
+            <a href="/profile">Profile</a>
+            <a href="{{ url_for('logout') }}" class="logout">Logout</a>
+        </div>
+    </nav>
+
+    <main class="page">
+
+        <div class="header">
+            <h1>Lost & <span>Found</span></h1>
+            <p>Report and find lost or found items on campus.</p>
+        </div>
+
+        <div class="post-box">
+
+            <h2>Report an Item</h2>
+
+            <form action="/lost-found/add" method="POST">
+
+                <div class="form-group">
+                    <label>Item Name</label>
+                    <input
+                        type="text"
+                        name="item_name"
+                        placeholder="Example: Student ID Card"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label>Item Type</label>
+
+                    <select name="item_type" required>
+                        <option value="">Select Type</option>
+                        <option value="Lost">Lost</option>
+                        <option value="Found">Found</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Location</label>
+
+                    <input
+                        type="text"
+                        name="location"
+                        placeholder="Where was it lost/found?"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label>Description</label>
+
+                    <textarea
+                        name="description"
+                        placeholder="Describe the item..."
+                        required
+                    ></textarea>
+                </div>
+
+                <button type="submit" class="submit-btn">
+                    Submit Report
+                </button>
+
+            </form>
+
+        </div>
+
+        <div class="items">
+
+    {% if items %}
+
+        {% for item in items %}
+
+            <div class="item">
+
+                <h2>{{ item.item_name }}</h2>
+
+                <p>
+                    <strong>Type:</strong> {{ item.item_type }}
+                </p>
+
+                <p>
+                    <strong>Location:</strong> {{ item.location }}
+                </p>
+
+                <p>
+                    {{ item.description }}
+                </p>
+
+                <span class="status">
+                    {{ item.status }}
+                </span>
+
+            </div>
+
+        {% endfor %}
+
+    {% else %}
+
+        <div class="item">
+
+            <h2>No Items Reported</h2>
+
+            <p>
+                No lost or found items have been reported yet.
+            </p>
+
+        </div>
+
+    {% endif %}
+
+</div>
+    </main>
+
+    <footer>
+        © 2026 CampusMate. Smart Campus Life Management Platform.
+    </footer>
+
+</body>
+</html>

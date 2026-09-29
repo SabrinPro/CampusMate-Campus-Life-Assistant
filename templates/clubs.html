@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CampusMate - Clubs</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #050505;
+            color: white;
+        }
+
+        nav {
+            background: #0a0a0a;
+            border-bottom: 1px solid #222;
+            padding: 18px 7%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            color: #00ff88;
+            font-size: 27px;
+            font-weight: bold;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .nav-links a:hover {
+            color: #00ff88;
+        }
+
+        .logout {
+            border: 1px solid #00ff88;
+            padding: 9px 16px;
+            border-radius: 7px;
+            color: #00ff88 !important;
+        }
+
+        .page {
+            padding: 45px 7%;
+        }
+
+        .header {
+            margin-bottom: 35px;
+        }
+
+        .header h1 {
+            font-size: 38px;
+        }
+
+        .header h1 span {
+            color: #00ff88;
+        }
+
+        .header p {
+            color: #999;
+            margin-top: 10px;
+        }
+
+        .club-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .club {
+            background: #101010;
+            border: 1px solid #242424;
+            border-radius: 15px;
+            padding: 25px;
+            transition: 0.2s;
+        }
+
+        .club:hover {
+            border-color: #00ff88;
+            transform: translateY(-4px);
+        }
+
+        .club-icon {
+            font-size: 35px;
+            margin-bottom: 15px;
+        }
+
+        .club h2 {
+            color: #00ff88;
+            margin-bottom: 10px;
+        }
+
+        .club p {
+            color: #999;
+            line-height: 1.6;
+            font-size: 14px;
+        }
+
+        .members {
+            margin-top: 15px;
+            color: #00ff88;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .empty {
+            background: #101010;
+            border: 1px dashed #333;
+            border-radius: 15px;
+            padding: 40px;
+            text-align: center;
+            color: #888;
+            font-size: 14px;
+        }
+
+        footer {
+            margin-top: 50px;
+            padding: 22px;
+            text-align: center;
+            color: #777;
+            background: #090909;
+            border-top: 1px solid #222;
+        }
+
+        @media (max-width: 900px) {
+            .club-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
+
+            nav {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .club-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .page {
+                padding: 30px 5%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav>
+
+        <div class="logo">
+            CampusMate
+        </div>
+
+        <div class="nav-links">
+
+            <a href="{{ url_for('dashboard') }}">
+                Dashboard
+            </a>
+
+            <a href="{{ url_for('events') }}">
+                Events
+            </a>
+
+            <a href="{{ url_for('notices') }}">
+                Notices
+            </a>
+
+            <a href="{{ url_for('clubs') }}">
+                Clubs
+            </a>
+
+            <a href="{{ url_for('groups') }}">
+                Study Groups
+            </a>
+
+            <a href="{{ url_for('logout') }}" class="logout">
+                Logout
+            </a>
+
+        </div>
+
+    </nav>
+
+
+    <main class="page">
+
+        <div class="header">
+
+            <h1>
+                Student <span>Clubs</span>
+            </h1>
+
+            <p>
+                Explore clubs and student activities on campus.
+            </p>
+
+        </div>
+
+
+        {% if clubs %}
+
+            <div class="club-grid">
+
+                {% set icons = ['💻', '🤖', '🎨', '⚽', '📷', '🚀'] %}
+
+                {% for club in clubs %}
+
+                    <div class="club">
+
+                        <div class="club-icon">
+                            {{ icons[loop.index0 % 6] }}
+                        </div>
+
+                        <h2>
+                            {{ club.name }}
+                        </h2>
+
+                        <p>
+                            {{ club.description }}
+                        </p>
+
+                        <div class="members">
+                            {{ club.members_count }} Members
+                        </div>
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+        {% else %}
+
+            <div class="empty">
+                No clubs are available at the moment.
+            </div>
+
+        {% endif %}
+
+    </main>
+
+
+    <footer>
+        © 2026 CampusMate. Smart Campus Life Management Platform.
+    </footer>
+
+</body>
+</html>

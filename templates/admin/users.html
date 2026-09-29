@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CampusMate - Users</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <nav class="admin-nav">
+
+        <div class="logo">CampusMate Admin</div>
+
+        <div class="nav-links">
+            <a href="/admin">Dashboard</a>
+            <a href="/admin/users">Users</a>
+            <a href="/admin/events">Events</a>
+            <a href="/admin/notices">Notices</a>
+            <a href="/admin/groups">Groups</a>
+            <a href="/admin/issues">Issues</a>
+            <a href="{{ url_for('logout') }}" class="logout-btn">Logout</a>
+        </div>
+
+    </nav>
+
+
+    <main class="admin-container">
+
+        <div class="admin-header">
+            <h1>Registered <span>Users</span></h1>
+            <p>View students registered on CampusMate.</p>
+        </div>
+
+
+        <div class="admin-section">
+
+            <div class="table-container">
+
+                <table>
+
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Role</th>
+                            <th>Created</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        {% for user in users %}
+
+                        <tr>
+                            <td>{{ user.id }}</td>
+                            <td>{{ user.name }}</td>
+                            <td>{{ user.email }}</td>
+
+                            <td>
+                                {% if user.is_admin %}
+                                    <span class="status success">Admin</span>
+                                {% else %}
+                                    <span class="status">Student</span>
+                                {% endif %}
+                            </td>
+
+                            <td>
+                                {{ user.created_at.strftime('%d %b %Y') }}
+                            </td>
+                        </tr>
+
+                        {% else %}
+
+                        <tr>
+                            <td colspan="5" class="empty">
+                                No users found.
+                            </td>
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </main>
+
+
+    <footer>
+        © 2026 CampusMate Admin Panel.
+    </footer>
+
+</body>
+</html>

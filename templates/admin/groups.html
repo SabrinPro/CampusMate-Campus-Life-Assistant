@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CampusMate - Manage Groups</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <nav class="admin-nav">
+
+        <div class="logo">CampusMate Admin</div>
+
+        <div class="nav-links">
+            <a href="/admin">Dashboard</a>
+            <a href="/admin/users">Users</a>
+            <a href="/admin/events">Events</a>
+            <a href="/admin/notices">Notices</a>
+            <a href="/admin/groups">Groups</a>
+            <a href="/admin/issues">Issues</a>
+            <a href="{{ url_for('logout') }}" class="logout-btn">Logout</a>
+        </div>
+
+    </nav>
+
+
+    <main class="admin-container">
+
+        <div class="admin-header">
+            <h1>Study <span>Groups</span></h1>
+            <p>Manage study groups and student join requests.</p>
+        </div>
+
+
+        <div class="form-card">
+
+            <h2>Create Study <span>Group</span></h2>
+
+            <form action="/admin/groups/add" method="POST">
+
+                <div class="form-grid">
+
+                    <div>
+                        <label>Subject</label>
+
+                        <input
+                            type="text"
+                            name="subject"
+                            placeholder="Example: Database Systems"
+                            required
+                        >
+                    </div>
+
+                    <div>
+                        <label>Group Name</label>
+
+                        <input
+                            type="text"
+                            name="group_name"
+                            placeholder="Example: DB Study Team"
+                            required
+                        >
+                    </div>
+
+                    <div>
+                        <label>Meeting Time</label>
+
+                        <input
+                            type="text"
+                            name="meeting_time"
+                            placeholder="Sunday 6:00 PM"
+                            required
+                        >
+                    </div>
+
+                </div>
+
+                <button type="submit" class="green-button">
+                    Create Group
+                </button>
+
+            </form>
+
+        </div>
+
+
+        <div class="admin-section">
+
+            <div class="section-title">
+                <h2>All Study <span>Groups</span></h2>
+            </div>
+
+
+            <div class="table-container">
+
+                <table>
+
+                    <thead>
+                        <tr>
+                            <th>Subject</th>
+                            <th>Group Name</th>
+                            <th>Members</th>
+                            <th>Meeting Time</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        {% for group in groups %}
+
+                        <tr>
+
+                            <td>{{ group.subject }}</td>
+
+                            <td>{{ group.group_name }}</td>
+
+                            <td>{{ group.members_count }}</td>
+
+                            <td>{{ group.meeting_time }}</td>
+
+                            <td>
+                                <a
+                                    href="/admin/groups/delete/{{ group.id }}"
+                                    class="delete-btn"
+                                    onclick="return confirmDelete()"
+                                >
+                                    Delete
+                                </a>
+                            </td>
+
+                        </tr>
+
+                        {% else %}
+
+                        <tr>
+                            <td colspan="5" class="empty">
+                                No study groups found.
+                            </td>
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+
+        <div class="admin-section">
+
+            <div class="section-title">
+                <h2>Join <span>Requests</span></h2>
+            </div>
+
+
+            <div class="table-container">
+
+                <table>
+
+                    <thead>
+                        <tr>
+                            <th>Student</th>
+                            <th>Group</th>
+                            <th>Date</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        {% for request in group_requests %}
+
+                        <tr>
+
+                            <td>{{ request.user_name }}</td>
+
+                            <td>{{ request.group_name }}</td>
+
+                            <td>{{ request.join_date }}</td>
+
+                            <td>
+                                {{ request.status }}
+                            </td>
+
+                            <td>
+
+                                {% if request.status|trim|lower == "pending" %}
+
+                                <a
+                                    href="/admin/groups/approve/{{ request.id }}"
+                                    class="small-btn"
+                                >
+                                    Approve
+                                </a>
+
+                                <a
+                                    href="/admin/groups/reject/{{ request.id }}"
+                                    class="delete-btn"
+                                >
+                                    Reject
+                                </a>
+
+                                {% else %}
+
+                                <span class="status">
+                                    {{ request.status }}
+                                </span>
+
+                                {% endif %}
+
+                            </td>
+
+                        </tr>
+
+                        {% else %}
+
+                        <tr>
+                            <td colspan="5" class="empty">
+                                No join requests found.
+                            </td>
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </main>
+
+
+    <footer>
+        © 2026 CampusMate Admin Panel.
+    </footer>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+
+</body>
+</html>

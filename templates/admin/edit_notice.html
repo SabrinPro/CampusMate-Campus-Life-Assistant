@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CampusMate - Edit Notice</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <nav class="admin-nav">
+
+        <div class="logo">CampusMate Admin</div>
+
+        <div class="nav-links">
+            <a href="/admin">Dashboard</a>
+            <a href="/admin/users">Users</a>
+            <a href="/admin/events">Events</a>
+            <a href="/admin/notices">Notices</a>
+            <a href="/admin/groups">Groups</a>
+            <a href="/admin/issues">Issues</a>
+            <a href="{{ url_for('logout') }}" class="logout-btn">Logout</a>
+        </div>
+
+    </nav>
+
+
+    <main class="admin-container">
+
+        <div class="admin-header">
+            <h1>Edit <span>Notice</span></h1>
+            <p>Update university announcement information.</p>
+        </div>
+
+
+        <div class="form-card">
+
+            <h2>Update <span>Notice</span></h2>
+
+            <form action="/admin/notices/edit/{{ notice.id }}" method="POST">
+
+                <div class="form-grid">
+
+                    <div>
+                        <label>Title</label>
+
+                        <input
+                            type="text"
+                            name="title"
+                            value="{{ notice.title }}"
+                            required
+                        >
+                    </div>
+
+
+                    <div>
+                        <label>Category</label>
+
+                        <select name="category" required>
+
+                            <option value="General"
+                                {% if notice.category == "General" %}selected{% endif %}>
+                                General
+                            </option>
+
+                            <option value="Academic"
+                                {% if notice.category == "Academic" %}selected{% endif %}>
+                                Academic
+                            </option>
+
+                            <option value="Event"
+                                {% if notice.category == "Event" %}selected{% endif %}>
+                                Event
+                            </option>
+
+                            <option value="Important"
+                                {% if notice.category == "Important" %}selected{% endif %}>
+                                Important
+                            </option>
+
+                        </select>
+                    </div>
+
+
+                    <div>
+                        <label>Priority</label>
+
+                        <select name="priority" required>
+
+                            <option value="Normal"
+                                {% if notice.priority == "Normal" %}selected{% endif %}>
+                                Normal
+                            </option>
+
+                            <option value="Important"
+                                {% if notice.priority == "Important" %}selected{% endif %}>
+                                Important
+                            </option>
+
+                            <option value="Urgent"
+                                {% if notice.priority == "Urgent" %}selected{% endif %}>
+                                Urgent
+                            </option>
+
+                        </select>
+                    </div>
+
+                </div>
+
+
+                <label>Notice Content</label>
+
+                <textarea
+                    name="content"
+                    required
+                >{{ notice.content }}</textarea>
+
+
+                <button type="submit" class="green-button">
+                    Save Changes
+                </button>
+
+                <a href="/admin/notices" class="small-btn">
+                    Cancel
+                </a>
+
+            </form>
+
+        </div>
+
+    </main>
+
+
+    <footer>
+        © 2026 CampusMate Admin Panel.
+    </footer>
+
+</body>
+</html>

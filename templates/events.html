@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CampusMate - Events</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #050505;
+            color: white;
+        }
+
+        nav {
+            background: #0a0a0a;
+            border-bottom: 1px solid #222;
+            padding: 18px 7%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            color: #00ff88;
+            font-size: 27px;
+            font-weight: bold;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 22px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .nav-links a:hover {
+            color: #00ff88;
+        }
+
+        .logout {
+            border: 1px solid #00ff88;
+            color: #00ff88 !important;
+            padding: 9px 16px;
+            border-radius: 7px;
+        }
+
+        .logout:hover {
+            background: #00ff88;
+            color: #000 !important;
+        }
+
+        .page {
+            padding: 45px 7%;
+        }
+
+        .page-header {
+            margin-bottom: 30px;
+        }
+
+        .page-header h1 {
+            font-size: 38px;
+            margin-bottom: 10px;
+        }
+
+        .page-header h1 span {
+            color: #00ff88;
+        }
+
+        .page-header p {
+            color: #999;
+            font-size: 15px;
+        }
+
+        .controls {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 35px;
+        }
+
+        .search-box {
+            flex: 1;
+        }
+
+        .search-box input,
+        .category-select {
+            width: 100%;
+            padding: 13px 15px;
+            background: #111;
+            border: 1px solid #292929;
+            border-radius: 8px;
+            color: white;
+            outline: none;
+            font-size: 14px;
+        }
+
+        .search-box input:focus,
+        .category-select:focus {
+            border-color: #00ff88;
+        }
+
+        .category-box {
+            width: 220px;
+        }
+
+        .category-select option {
+            background: #111;
+            color: white;
+        }
+
+        .events-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 22px;
+        }
+
+        .event-card {
+            background: #101010;
+            border: 1px solid #242424;
+            border-radius: 15px;
+            padding: 25px;
+            transition: 0.3s;
+        }
+
+        .event-card:hover {
+            border-color: #00ff88;
+            transform: translateY(-5px);
+        }
+
+        .event-category {
+            display: inline-block;
+            background: #143025;
+            color: #00ff88;
+            font-size: 11px;
+            padding: 6px 10px;
+            border-radius: 20px;
+            margin-bottom: 15px;
+        }
+
+        .event-card h2 {
+            font-size: 21px;
+            margin-bottom: 15px;
+        }
+
+        .event-info {
+            margin-bottom: 15px;
+        }
+
+        .event-info p {
+            color: #999;
+            font-size: 13px;
+            margin-bottom: 8px;
+        }
+
+        .event-description {
+            color: #aaa;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 18px;
+        }
+
+        .seat-info {
+            color: #00ff88;
+            font-size: 13px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .register-btn {
+            width: 100%;
+            padding: 11px;
+            border: none;
+            border-radius: 7px;
+            background: #00ff88;
+            color: #000;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .register-btn:hover {
+            background: #00cc6a;
+        }
+
+        .registered-btn {
+            width: 100%;
+            padding: 11px;
+            border: 1px solid #00ff88;
+            border-radius: 7px;
+            background: transparent;
+            color: #00ff88;
+            font-weight: bold;
+            font-size: 14px;
+            cursor: default;
+        }
+
+        .empty-message {
+            display: none;
+            text-align: center;
+            color: #777;
+            padding: 50px 20px;
+            font-size: 16px;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 35px;
+            color: #00ff88;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        footer {
+            margin-top: 50px;
+            padding: 22px;
+            text-align: center;
+            color: #777;
+            background: #090909;
+            border-top: 1px solid #222;
+            font-size: 13px;
+        }
+
+        @media (max-width: 1000px) {
+            .events-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 700px) {
+            nav {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .controls {
+                flex-direction: column;
+            }
+
+            .category-box {
+                width: 100%;
+            }
+
+            .events-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .page {
+                padding: 30px 5%;
+            }
+
+            .page-header h1 {
+                font-size: 30px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav>
+        <div class="logo">CampusMate</div>
+
+        <div class="nav-links">
+            <a href="/dashboard">Dashboard</a>
+            <a href="/events">Events</a>
+            <a href="/notices">Notices</a>
+            <a href="/profile">Profile</a>
+            <a href="{{ url_for('logout') }}" class="logout">Logout</a>
+        </div>
+    </nav>
+
+
+    <main class="page">
+
+        <div class="page-header">
+            <h1>Campus <span>Events</span></h1>
+
+            <p>
+                Discover upcoming university events and register easily.
+            </p>
+        </div>
+
+
+        <div class="controls">
+
+            <div class="search-box">
+                <input
+                    type="text"
+                    id="eventSearch"
+                    placeholder="Search events..."
+                    onkeyup="filterEvents()"
+                >
+            </div>
+
+            <div class="category-box">
+                <select
+                    id="categoryFilter"
+                    class="category-select"
+                    onchange="filterEvents()"
+                >
+                    <option value="all">All Categories</option>
+                    <option value="academic">Academic</option>
+                    <option value="cultural">Cultural</option>
+                    <option value="sports">Sports</option>
+                    <option value="workshop">Workshop</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+
+        </div>
+
+
+        <div class="events-grid" id="eventsGrid">
+
+
+            {% for event in events %}
+
+<div
+    class="event-card"
+    data-title="{{ event.title|lower }}"
+    data-category="{{ event.category|lower }}"
+>
+
+    <span class="event-category">
+        {{ event.category }}
+    </span>
+
+    <h2>{{ event.title }}</h2>
+
+    <div class="event-info">
+        <p>📅 Date: {{ event.date.strftime('%B %d, %Y') }}</p>
+        <p>⏰ Time: {{ event.time.strftime('%I:%M %p') }}</p>
+        <p>📍 Location: {{ event.location }}</p>
+    </div>
+
+    <p class="event-description">
+        {{ event.description }}
+    </p>
+
+    <div class="seat-info">
+    {% if available_seats[event.id] > 0 %}
+        {{ available_seats[event.id] }} seats available
+    {% else %}
+        Event Full
+    {% endif %}
+</div>
+
+    {% if event.id in registered_event_ids %}
+
+<button type="button" class="registered-btn">
+    Registered ✓
+</button>
+
+{% else %}
+
+<form action="/events/register/{{ event.id }}" method="POST">
+    <button type="submit" class="register-btn">
+        Register
+    </button>
+</form>
+
+{% endif %}
+
+</div>
+
+{% else %}
+
+<div class="empty-message" style="display:block;">
+    No events available right now.
+</div>
+
+{% endfor %}
+        <a href="/dashboard" class="back-link">
+            ← Back to Dashboard
+        </a>
+
+    </main>
+
+
+    <footer>
+        <p>
+            © 2026 CampusMate. Smart Campus Life Management Platform.
+        </p>
+    </footer>
+
+
+    <script>
+        function filterEvents() {
+
+            const searchValue =
+                document.getElementById("eventSearch").value.toLowerCase();
+
+            const categoryValue =
+                document.getElementById("categoryFilter").value;
+
+            const eventCards =
+                document.querySelectorAll(".event-card");
+
+            let visibleCount = 0;
+
+            eventCards.forEach(function(card) {
+
+                const title =
+                    card.getAttribute("data-title").toLowerCase();
+
+                const category =
+                    card.getAttribute("data-category").toLowerCase();
+
+                const matchesSearch =
+                    title.includes(searchValue);
+
+                const matchesCategory =
+                    categoryValue === "all" ||
+                    category === categoryValue;
+
+                if (matchesSearch && matchesCategory) {
+                    card.style.display = "block";
+                    visibleCount++;
+                } else {
+                    card.style.display = "none";
+                }
+
+            });
+
+            const emptyMessage =
+                document.getElementById("emptyMessage");
+
+            if (visibleCount === 0) {
+                emptyMessage.style.display = "block";
+            } else {
+                emptyMessage.style.display = "none";
+            }
+        }
+    </script>
+
+</body>
+</html>
+

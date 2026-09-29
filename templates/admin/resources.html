@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CampusMate - Manage Resources</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+    <style>
+        .resource-form {
+            display: grid;
+            gap: 15px;
+            max-width: 750px;
+        }
+
+        .resource-form input,
+        .resource-form textarea {
+            width: 100%;
+            padding: 13px 15px;
+            background: #171717;
+            color: white;
+            border: 1px solid #333;
+            border-radius: 8px;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+
+        .resource-form textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .resource-form input::placeholder,
+        .resource-form textarea::placeholder {
+            color: #777;
+        }
+
+        .resource-form input:focus,
+        .resource-form textarea:focus {
+            outline: none;
+            border-color: #00ff88;
+        }
+
+        .resource-form button {
+            width: fit-content;
+            padding: 11px 22px;
+            background: #00ff88;
+            color: #000;
+            border: none;
+            border-radius: 7px;
+            font-weight: bold;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .resource-form button:hover {
+            background: #00cc6a;
+        }
+
+        .resource-table a {
+            color: #00ff88;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .resource-table a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="admin-nav">
+
+        <div class="logo">
+            CampusMate Admin
+        </div>
+
+        <div class="nav-links">
+
+            <a href="/admin">Dashboard</a>
+            <a href="/admin/users">Users</a>
+            <a href="/admin/events">Events</a>
+            <a href="/admin/notices">Notices</a>
+
+            <a href="{{ url_for('admin_clubs') }}">
+                Clubs
+            </a>
+
+            <a href="/admin/groups">
+                Groups
+            </a>
+
+            <a href="/admin/resources">
+                Resources
+            </a>
+
+            <a href="{{ url_for('logout') }}" class="logout-btn">
+                Logout
+            </a>
+
+        </div>
+
+    </nav>
+
+
+    <main class="admin-container">
+
+
+        <div class="admin-header">
+
+            <h1>
+                Manage <span>Resources</span>
+            </h1>
+
+            <p>
+                Add and manage study materials for students.
+            </p>
+
+        </div>
+
+
+        <div class="admin-section">
+
+            <div class="section-title">
+
+                <h2>
+                    Add <span>Resource</span>
+                </h2>
+
+                <p>
+                    Add a study material link for a subject or course.
+                </p>
+
+            </div>
+
+
+            <form
+                method="POST"
+                action="{{ url_for('admin_add_resource') }}"
+                class="resource-form"
+            >
+
+                <input
+                    type="text"
+                    name="title"
+                    placeholder="Resource Title"
+                    required
+                >
+
+                <input
+                    type="text"
+                    name="subject"
+                    placeholder="Subject / Course"
+                    required
+                >
+
+                <textarea
+                    name="description"
+                    placeholder="Resource Description"
+                    required
+                ></textarea>
+
+                <input
+                    type="url"
+                    name="resource_url"
+                    placeholder="Resource URL (https://...)"
+                    required
+                >
+
+                <button type="submit">
+                    Add Resource
+                </button>
+
+            </form>
+
+        </div>
+
+
+        <div class="admin-section">
+
+            <div class="section-title">
+
+                <h2>
+                    Available <span>Resources</span>
+                </h2>
+
+                <p>
+                    Resources currently available to students.
+                </p>
+
+            </div>
+
+
+            <div class="table-container">
+
+                <table class="resource-table">
+
+                    <thead>
+
+                        <tr>
+                            <th>Title</th>
+                            <th>Subject</th>
+                            <th>Description</th>
+                            <th>Resource</th>
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                        {% for resource in resources %}
+
+                        <tr>
+
+                            <td>
+                                {{ resource.title }}
+                            </td>
+
+                            <td>
+                                {{ resource.subject }}
+                            </td>
+
+                            <td>
+                                {{ resource.description }}
+                            </td>
+
+                            <td>
+
+                                <a
+                                    href="{{ resource.resource_url }}"
+                                    target="_blank"
+                                >
+                                    View Resource
+                                </a>
+
+                            </td>
+
+                        </tr>
+
+                        {% else %}
+
+                        <tr>
+
+                            <td
+                                colspan="4"
+                                class="empty"
+                            >
+                                No resources added yet.
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+
+    </main>
+
+
+    <footer>
+        © 2026 CampusMate Admin Panel.
+    </footer>
+
+
+</body>
+</html>

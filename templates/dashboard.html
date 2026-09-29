@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CampusMate - Dashboard</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #050505;
+            color: white;
+        }
+
+        nav {
+            background: #0a0a0a;
+            border-bottom: 1px solid #222;
+            padding: 18px 7%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            color: #00ff88;
+            font-size: 27px;
+            font-weight: bold;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 22px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: white;
+            font-size: 14px;
+        }
+
+        .nav-links a:hover {
+            color: #00ff88;
+        }
+
+        .logout {
+            border: 1px solid #00ff88;
+            color: #00ff88 !important;
+            padding: 9px 16px;
+            border-radius: 7px;
+        }
+
+        .logout:hover {
+            background: #00ff88;
+            color: #000 !important;
+        }
+
+        .dashboard {
+            padding: 45px 7%;
+        }
+
+        .welcome {
+            margin-bottom: 35px;
+        }
+
+        .welcome h1 {
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+
+        .welcome h1 span {
+            color: #00ff88;
+        }
+
+        .welcome p {
+            color: #999;
+            font-size: 15px;
+        }
+
+        .quick-menu {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+            margin-bottom: 40px;
+        }
+
+        .menu-card {
+            background: #101010;
+            border: 1px solid #242424;
+            border-radius: 12px;
+            padding: 22px;
+            text-decoration: none;
+            color: white;
+            transition: 0.3s;
+        }
+
+        .menu-card:hover {
+            border-color: #00ff88;
+            transform: translateY(-4px);
+        }
+
+        .menu-icon {
+            font-size: 26px;
+            margin-bottom: 12px;
+        }
+
+        .menu-card h3 {
+            color: #00ff88;
+            margin-bottom: 7px;
+            font-size: 18px;
+        }
+
+        .menu-card p {
+            color: #888;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 22px;
+        }
+
+        .section-card {
+            background: #101010;
+            border: 1px solid #242424;
+            border-radius: 15px;
+            padding: 25px;
+        }
+
+        .section-card h2 {
+            font-size: 22px;
+            margin-bottom: 20px;
+        }
+
+        .section-card h2 span {
+            color: #00ff88;
+        }
+
+        .notice {
+            padding: 16px;
+            background: #171717;
+            border-radius: 10px;
+            margin-bottom: 12px;
+            border-left: 3px solid #00ff88;
+        }
+
+        .notice:last-child {
+            margin-bottom: 0;
+        }
+
+        .notice h3 {
+            font-size: 16px;
+            margin-bottom: 6px;
+        }
+
+        .notice p {
+            color: #999;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .date {
+            color: #00ff88;
+            font-size: 12px;
+            margin-top: 8px;
+        }
+
+        .event {
+            padding: 15px;
+            background: #171717;
+            border-radius: 10px;
+            margin-bottom: 12px;
+        }
+
+        .event:last-child {
+            margin-bottom: 0;
+        }
+
+        .event h3 {
+            font-size: 16px;
+            margin-bottom: 7px;
+        }
+
+        .event p {
+            color: #999;
+            font-size: 13px;
+            margin-bottom: 5px;
+        }
+
+        .event-button {
+            display: inline-block;
+            margin-top: 8px;
+            background: #00ff88;
+            color: #000;
+            text-decoration: none;
+            padding: 8px 13px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .event-button:hover {
+            background: #00cc6a;
+        }
+
+        .profile-box {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .profile-circle {
+            width: 75px;
+            height: 75px;
+            margin: 0 auto 15px;
+            border-radius: 50%;
+            background: #00ff88;
+            color: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .profile-box h3 {
+            margin-bottom: 5px;
+        }
+
+        .profile-box p {
+            color: #888;
+            font-size: 14px;
+        }
+
+        .profile-button {
+            display: block;
+            text-align: center;
+            text-decoration: none;
+            color: #00ff88;
+            border: 1px solid #00ff88;
+            padding: 10px;
+            border-radius: 7px;
+            margin-top: 15px;
+        }
+
+        .profile-button:hover {
+            background: #00ff88;
+            color: #000;
+        }
+
+        .notification {
+            background: #171717;
+            padding: 13px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+
+        .notification p {
+            font-size: 13px;
+            color: #aaa;
+            line-height: 1.5;
+        }
+
+        footer {
+            margin-top: 50px;
+            padding: 22px;
+            text-align: center;
+            color: #777;
+            background: #090909;
+            border-top: 1px solid #222;
+            font-size: 13px;
+        }
+
+        @media (max-width: 1000px) {
+            .quick-menu {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 650px) {
+            nav {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .dashboard {
+                padding: 30px 5%;
+            }
+
+            .welcome h1 {
+                font-size: 28px;
+            }
+
+            .quick-menu {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav>
+        <div class="logo">CampusMate</div>
+
+        <div class="nav-links">
+            <a href="/dashboard">Dashboard</a>
+            <a href="/events">Events</a>
+            <a href="/notices">Notices</a>
+            <a href="{{ url_for('clubs') }}">
+    Clubs
+</a>
+            <a href="/profile">Profile</a>
+            <a href="{{ url_for('logout') }}" class="logout">Logout</a>
+        </div>
+    </nav>
+
+
+    <main class="dashboard">
+
+        <div class="welcome">
+            <h1>
+                Welcome, <span>{{ session.get('user_name', 'Student') }}</span>
+            </h1>
+
+            <p>
+                Manage your campus life from one simple dashboard.
+            </p>
+        </div>
+
+
+        <div class="quick-menu">
+
+            <a href="/events" class="menu-card">
+                <div class="menu-icon">📅</div>
+                <h3>Events</h3>
+                <p>
+                    Explore upcoming university events and register.
+                </p>
+            </a>
+
+            <a href="/notices" class="menu-card">
+                <div class="menu-icon">📢</div>
+                <h3>Notices</h3>
+                <p>
+                    Check the latest university announcements.
+                </p>
+            </a>
+
+            <a href="/groups" class="menu-card">
+                <div class="menu-icon">👥</div>
+                <h3>Study Groups</h3>
+                <p>
+                    Find and join study groups by subject.
+                </p>
+            </a>
+
+            <a href="/issues" class="menu-card">
+                <div class="menu-icon">🛠</div>
+                <h3>Campus Issues</h3>
+                <p>
+                    Report and track campus maintenance issues.
+                </p>
+            </a>
+
+
+
+        <a href="{{ url_for('resources') }}" class="menu-card">
+    <div class="menu-icon">📚</div>
+    <h3>Study Resources</h3>
+    <p>
+        Browse study materials by subject and course.
+    </p>
+</a>
+
+
+
+<a href="{{ url_for('lost_found') }}" class="menu-card">
+    <div class="menu-icon">🔎</div>
+    <h3>Lost & Found</h3>
+    <p>
+        Report and find lost or found items on campus.
+    </p>
+</a>
+
+
+
+        </div>
+
+
+        <div class="content-grid">
+
+            <div>
+
+                <div class="section-card">
+                    <h2>Latest <span>Notices</span></h2>
+
+                    <div class="notice">
+                        <h3>Welcome to CampusMate</h3>
+                        <p>
+                            Stay connected with university notices,
+                            events, clubs and academic activities.
+                        </p>
+                        <div class="date">Today</div>
+                    </div>
+
+                    <div class="notice">
+                        <h3>Semester Activities</h3>
+                        <p>
+                            Check the platform regularly for the
+                            latest campus information.
+                        </p>
+                        <div class="date">Recent</div>
+                    </div>
+
+                    <div class="notice">
+                        <h3>Important Announcement</h3>
+                        <p>
+                            New university updates will appear here.
+                        </p>
+                        <div class="date">Recent</div>
+                    </div>
+
+                </div>
+
+
+                <div class="section-card" style="margin-top: 22px;">
+                    <h2>Upcoming <span>Events</span></h2>
+
+                    {% for event in registered_events %}
+
+<div class="event">
+
+    <h3>{{ event.title }}</h3>
+
+    <p>📅 Date: {{ event.date.strftime('%B %d, %Y') }}</p>
+
+    <p>⏰ Time: {{ event.time.strftime('%I:%M %p') }}</p>
+
+    <p>📍 Location: {{ event.location }}</p>
+
+    <a href="/events" class="event-button">
+        View Event
+    </a>
+
+</div>
+
+{% else %}
+
+<div class="event">
+    <h3>No Registered Events</h3>
+    <p>You have not registered for any event yet.</p>
+    <a href="/events" class="event-button">
+        Explore Events
+    </a>
+</div>
+
+{% endfor %}
+
+                </div>
+
+            </div>
+
+
+            <div>
+
+                <div class="section-card">
+
+                    <div class="profile-box">
+
+                        <div class="profile-circle">
+                            {{ session.get('user_name', 'S')[0]|upper }}
+                        </div>
+
+                        <h3>
+                            {{ session.get('user_name', 'Student') }}
+                        </h3>
+
+                        <p>
+                            CampusMate Student
+                        </p>
+
+                        <a href="/profile" class="profile-button">
+                            View Profile
+                        </a>
+
+                    </div>
+
+                </div>
+
+
+                <div class="section-card" style="margin-top: 22px;">
+
+                    <h2>Notifications</h2>
+
+                    <div class="section-card" style="margin-top: 22px;">
+
+    <h2>Notifications</h2>
+
+    {% for notification in notifications %}
+
+    <div class="notification">
+        <p>
+            🔔 <strong>{{ notification.title }}</strong>
+        </p>
+
+        <p style="margin-top: 5px;">
+            {{ notification.message }}
+        </p>
+    </div>
+
+    {% else %}
+
+    <div class="notification">
+        <p>
+            🔔 No new notifications.
+        </p>
+    </div>
+
+    {% endfor %}
+
+    <a href="{{ url_for('notifications') }}" class="profile-button">
+        View All Notifications
+    </a>
+
+</div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+
+    <footer>
+        <p>
+            © 2026 CampusMate. Smart Campus Life Management Platform.
+        </p>
+    </footer>
+
+</body>
+</html>
+

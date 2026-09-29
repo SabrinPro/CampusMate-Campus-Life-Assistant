@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CampusMate - Smart Campus Life</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #050505;
+            color: white;
+        }
+
+        nav {
+            width: 100%;
+            padding: 20px 8%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #0a0a0a;
+            border-bottom: 1px solid #1f1f1f;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: #00ff88;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 25px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 15px;
+        }
+
+        .nav-links a:hover {
+            color: #00ff88;
+        }
+
+        .login-btn {
+            padding: 10px 20px;
+            border: 1px solid #00ff88;
+            border-radius: 8px;
+            color: #00ff88 !important;
+        }
+
+        .login-btn:hover {
+            background: #00ff88;
+            color: #000 !important;
+        }
+
+        .hero {
+            min-height: 85vh;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 70px 8%;
+            gap: 50px;
+        }
+
+        .hero-text {
+            max-width: 600px;
+        }
+
+        .hero-text h1 {
+            font-size: 58px;
+            line-height: 1.1;
+            margin-bottom: 20px;
+        }
+
+        .hero-text h1 span {
+            color: #00ff88;
+        }
+
+        .hero-text p {
+            color: #b5b5b5;
+            font-size: 18px;
+            line-height: 1.7;
+            margin-bottom: 30px;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn {
+            text-decoration: none;
+            padding: 14px 25px;
+            border-radius: 8px;
+            font-weight: bold;
+            display: inline-block;
+        }
+
+        .primary-btn {
+            background: #00ff88;
+            color: #000;
+        }
+
+        .primary-btn:hover {
+            background: #00cc6a;
+        }
+
+        .secondary-btn {
+            border: 1px solid #00ff88;
+            color: #00ff88;
+        }
+
+        .secondary-btn:hover {
+            background: #00ff88;
+            color: #000;
+        }
+
+        .hero-card {
+            width: 400px;
+            background: #101010;
+            border: 1px solid #202020;
+            border-radius: 18px;
+            padding: 30px;
+            box-shadow: 0 0 30px rgba(0, 255, 136, 0.08);
+        }
+
+        .hero-card h2 {
+            color: #00ff88;
+            margin-bottom: 20px;
+        }
+
+        .feature {
+            padding: 15px;
+            margin-bottom: 12px;
+            background: #171717;
+            border-radius: 10px;
+        }
+
+        .feature strong {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .feature span {
+            color: #999;
+            font-size: 14px;
+        }
+
+        .section {
+            padding: 70px 8%;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 35px;
+            margin-bottom: 45px;
+        }
+
+        .section-title span {
+            color: #00ff88;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .feature-box {
+            background: #101010;
+            border: 1px solid #222;
+            border-radius: 15px;
+            padding: 25px;
+            transition: 0.3s;
+        }
+
+        .feature-box:hover {
+            transform: translateY(-5px);
+            border-color: #00ff88;
+        }
+
+        .feature-box h3 {
+            color: #00ff88;
+            margin-bottom: 10px;
+        }
+
+        .feature-box p {
+            color: #aaa;
+            line-height: 1.6;
+        }
+
+        footer {
+            text-align: center;
+            padding: 25px;
+            background: #090909;
+            border-top: 1px solid #1f1f1f;
+            color: #777;
+        }
+
+        @media (max-width: 900px) {
+            .hero {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .hero-card {
+                width: 100%;
+                max-width: 500px;
+            }
+
+            .buttons {
+                justify-content: center;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-links {
+                gap: 10px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            nav {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .hero-text h1 {
+                font-size: 40px;
+            }
+
+            .hero-text p {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav>
+        <div class="logo">CampusMate</div>
+
+        <div class="nav-links">
+            <a href="/">Home</a>
+            <a href="#features">Features</a>
+            <a href="{{ url_for('login') }}" class="login-btn">Login</a>
+        </div>
+    </nav>
+
+
+    <section class="hero">
+
+        <div class="hero-text">
+            <h1>
+                Your Campus.<br>
+                <span>One Platform.</span>
+            </h1>
+
+            <p>
+                CampusMate brings university notices, events, clubs,
+                study groups, resources, lost & found, and campus
+                issue reporting together in one simple platform.
+            </p>
+
+            <div class="buttons">
+                <a href="{{ url_for('signup') }}" class="btn primary-btn">
+                    Get Started
+                </a>
+
+                <a href="#features" class="btn secondary-btn">
+                    Explore Features
+                </a>
+            </div>
+        </div>
+
+
+        <div class="hero-card">
+
+            <h2>CampusMate</h2>
+
+            <div class="feature">
+                <strong>📢 Notices</strong>
+                <span>Stay updated with university announcements.</span>
+            </div>
+
+            <div class="feature">
+                <strong>📅 Events</strong>
+                <span>Discover and register for campus events.</span>
+            </div>
+
+            <div class="feature">
+                <strong>👥 Study Groups</strong>
+                <span>Find students studying the same subjects.</span>
+            </div>
+
+            <div class="feature">
+                <strong>🛠 Campus Issues</strong>
+                <span>Report maintenance and campus problems.</span>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <section class="section" id="features">
+
+        <h2 class="section-title">
+            Everything You Need in <span>One Place</span>
+        </h2>
+
+        <div class="features-grid">
+
+            <div class="feature-box">
+                <h3>Events</h3>
+                <p>
+                    View upcoming campus events and register
+                    with a single click.
+                </p>
+            </div>
+
+            <div class="feature-box">
+                <h3>Notices</h3>
+                <p>
+                    Find important university announcements
+                    in one organized place.
+                </p>
+            </div>
+
+            <div class="feature-box">
+                <h3>Clubs</h3>
+                <p>
+                    Explore student clubs and discover
+                    campus activities.
+                </p>
+            </div>
+
+            <div class="feature-box">
+                <h3>Study Resources</h3>
+                <p>
+                    Browse organized academic resources
+                    by subject and course.
+                </p>
+            </div>
+
+            <div class="feature-box">
+                <h3>Lost & Found</h3>
+                <p>
+                    Report and search for lost or found
+                    items around campus.
+                </p>
+            </div>
+
+            <div class="feature-box">
+                <h3>Campus Issues</h3>
+                <p>
+                    Report campus problems and track
+                    their progress.
+                </p>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <footer>
+        <p>© 2026 CampusMate. Smart Campus Life Management Platform.</p>
+    </footer>
+
+</body>
+</html>

@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>CampusMate Admin - Lost & Found</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+    <style>
+        .items {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .item {
+            background: #101010;
+            border: 1px solid #242424;
+            padding: 25px;
+            border-radius: 15px;
+        }
+
+        .item h2 {
+            color: #00ff88;
+            margin-bottom: 12px;
+        }
+
+        .item p {
+            color: #999;
+            line-height: 1.6;
+            margin-bottom: 8px;
+        }
+
+        .status {
+            display: inline-block;
+            margin-top: 10px;
+            background: #173326;
+            color: #00ff88;
+            padding: 6px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+        }
+
+        .resolve-btn {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 16px;
+            background: #00ff88;
+            color: #000;
+            text-decoration: none;
+            border-radius: 7px;
+            font-weight: bold;
+            font-size: 13px;
+        }
+
+        .resolve-btn:hover {
+            background: #00cc6a;
+        }
+
+        .resolved {
+            background: #333;
+            color: #aaa;
+        }
+
+        @media (max-width: 700px) {
+            .items {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="admin-nav">
+
+        <div class="logo">
+            CampusMate Admin
+        </div>
+
+        <div class="nav-links">
+
+            <a href="/admin">Dashboard</a>
+            <a href="/admin/users">Users</a>
+            <a href="/admin/events">Events</a>
+            <a href="/admin/notices">Notices</a>
+
+            <a href="{{ url_for('admin_clubs') }}">
+                Clubs
+            </a>
+
+            <a href="/admin/groups">
+                Groups
+            </a>
+
+            <a href="/admin/resources">
+                Resources
+            </a>
+
+            <a href="/admin/lost-found">
+                Lost & Found
+            </a>
+
+            <a href="{{ url_for('logout') }}" class="logout-btn">
+                Logout
+            </a>
+
+        </div>
+
+    </nav>
+
+
+    <main class="admin-container">
+
+        <div class="admin-header">
+
+            <h1>
+                Lost <span>& Found</span>
+            </h1>
+
+            <p>
+                View and manage reported lost and found items.
+            </p>
+
+        </div>
+
+
+        <div class="items">
+
+            {% if items %}
+
+                {% for item in items %}
+
+                    <div class="item">
+
+                        <h2>
+                            {{ item.item_name }}
+                        </h2>
+
+                        <p>
+                            <strong>Type:</strong>
+                            {{ item.item_type }}
+                        </p>
+
+                        <p>
+                            <strong>Location:</strong>
+                            {{ item.location }}
+                        </p>
+
+                        <p>
+                            <strong>Description:</strong>
+                            {{ item.description }}
+                        </p>
+
+                        <p>
+                            <strong>Posted Date:</strong>
+                            {{ item.posted_date.strftime('%d %B %Y') }}
+                        </p>
+
+                        <span class="status">
+                            {{ item.status }}
+                        </span>
+
+                        {% if item.status != "Resolved" %}
+
+                            <br>
+
+                            <a
+                                href="/admin/lost-found/resolve/{{ item.id }}"
+                                class="resolve-btn"
+                            >
+                                Mark as Resolved
+                            </a>
+
+                        {% else %}
+
+                            <br>
+
+                            <span class="resolve-btn resolved">
+                                Resolved
+                            </span>
+
+                        {% endif %}
+
+                    </div>
+
+                {% endfor %}
+
+            {% else %}
+
+                <div class="item">
+
+                    <h2>
+                        No Reports
+                    </h2>
+
+                    <p>
+                        No lost or found items have been reported yet.
+                    </p>
+
+                </div>
+
+            {% endif %}
+
+        </div>
+
+    </main>
+
+
+    <footer>
+        © 2026 CampusMate Admin Panel.
+    </footer>
+
+</body>
+</html>

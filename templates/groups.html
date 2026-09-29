@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CampusMate - Study Groups</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #050505;
+            color: white;
+        }
+
+        nav {
+            background: #0a0a0a;
+            border-bottom: 1px solid #222;
+            padding: 18px 7%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            color: #00ff88;
+            font-size: 27px;
+            font-weight: bold;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .nav-links a:hover {
+            color: #00ff88;
+        }
+
+        .logout {
+            border: 1px solid #00ff88;
+            padding: 9px 16px;
+            border-radius: 7px;
+            color: #00ff88 !important;
+        }
+
+        .page {
+            padding: 45px 7%;
+        }
+
+        .header {
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 38px;
+        }
+
+        .header h1 span {
+            color: #00ff88;
+        }
+
+        .header p {
+            color: #999;
+            margin-top: 10px;
+        }
+
+        .group-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .group {
+            background: #101010;
+            border: 1px solid #242424;
+            padding: 25px;
+            border-radius: 15px;
+        }
+
+        .group:hover {
+            border-color: #00ff88;
+        }
+
+        .group h2 {
+            color: #00ff88;
+            margin-bottom: 12px;
+        }
+
+        .group p {
+            color: #999;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 8px;
+        }
+
+        .join-btn {
+            margin-top: 15px;
+            width: 100%;
+            padding: 11px;
+            border: none;
+            border-radius: 7px;
+            background: #00ff88;
+            color: #000;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .join-btn:hover {
+            background: #00cc6a;
+        }
+
+        .join-btn:disabled {
+            cursor: default;
+            opacity: 0.8;
+        }
+
+        footer {
+            margin-top: 50px;
+            padding: 22px;
+            text-align: center;
+            color: #777;
+            background: #090909;
+            border-top: 1px solid #222;
+        }
+
+        @media (max-width: 900px) {
+            .group-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
+            nav {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .group-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .page {
+                padding: 30px 5%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav>
+
+        <div class="logo">
+            CampusMate
+        </div>
+
+        <div class="nav-links">
+            <a href="/dashboard">Dashboard</a>
+            <a href="/events">Events</a>
+            <a href="/notices">Notices</a>
+            <a href="/groups">Study Groups</a>
+            <a href="/profile">Profile</a>
+            <a href="{{ url_for('logout') }}" class="logout">
+                Logout
+            </a>
+        </div>
+
+    </nav>
+
+
+    <main class="page">
+
+        <div class="header">
+
+            <h1>
+                Study <span>Groups</span>
+            </h1>
+
+            <p>
+                Find study groups and connect with students.
+            </p>
+
+        </div>
+
+
+        <div class="group-grid">
+
+            {% for group in groups %}
+
+            <div class="group">
+
+                <h2>
+                    {{ group.group_name }}
+                </h2>
+
+                <p>
+                    Subject: {{ group.subject }}
+                </p>
+
+                <p>
+                    Meeting: {{ group.meeting_time }}
+                </p>
+
+                <p>
+                    Members: {{ group.members_count }}
+                </p>
+
+
+                {% set status = group_status.get(group.id, "")|trim|lower %}
+
+
+                {% if status == "approved" %}
+
+                    <button
+                        class="join-btn"
+                        type="button"
+                        disabled
+                    >
+                        Joined ✓
+                    </button>
+
+
+                {% elif status == "pending" %}
+
+                    <button
+                        class="join-btn"
+                        type="button"
+                        disabled
+                    >
+                        Request Pending
+                    </button>
+
+
+                {% elif status == "rejected" %}
+
+                    <button
+                        class="join-btn"
+                        type="button"
+                        disabled
+                    >
+                        Request Rejected
+                    </button>
+
+
+                {% else %}
+
+                    <form
+                        action="/groups/join/{{ group.id }}"
+                        method="POST"
+                    >
+
+                        <button
+                            class="join-btn"
+                            type="submit"
+                        >
+                            Request to Join
+                        </button>
+
+                    </form>
+
+                {% endif %}
+
+            </div>
+
+
+            {% else %}
+
+            <div class="group">
+
+                <h2>
+                    No Study Groups
+                </h2>
+
+                <p>
+                    No study groups are available right now.
+                </p>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+    </main>
+
+
+    <footer>
+
+        © 2026 CampusMate. Smart Campus Life Management Platform.
+
+    </footer>
+
+</body>
+</html>

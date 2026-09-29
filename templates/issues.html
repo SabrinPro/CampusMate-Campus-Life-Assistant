@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CampusMate - Campus Issues</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #050505;
+            color: white;
+        }
+
+        nav {
+            background: #0a0a0a;
+            border-bottom: 1px solid #222;
+            padding: 18px 7%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            color: #00ff88;
+            font-size: 27px;
+            font-weight: bold;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .nav-links a:hover {
+            color: #00ff88;
+        }
+
+        .logout {
+            border: 1px solid #00ff88;
+            padding: 9px 16px;
+            border-radius: 7px;
+            color: #00ff88 !important;
+        }
+
+        .page {
+            padding: 45px 7%;
+        }
+
+        .header {
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 38px;
+        }
+
+        .header h1 span {
+            color: #00ff88;
+        }
+
+        .header p {
+            color: #999;
+            margin-top: 10px;
+        }
+
+        .report-box {
+            background: #101010;
+            border: 1px solid #242424;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 35px;
+        }
+
+        .report-box h2 {
+            color: #00ff88;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            font-size: 14px;
+            margin-bottom: 7px;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px;
+            background: #171717;
+            border: 1px solid #303030;
+            border-radius: 7px;
+            color: white;
+            outline: none;
+        }
+
+        textarea {
+            min-height: 110px;
+            resize: vertical;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            border-color: #00ff88;
+        }
+
+        .submit-btn {
+            margin-top: 5px;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 7px;
+            background: #00ff88;
+            color: #000;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .issues-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .issue {
+            background: #101010;
+            border: 1px solid #242424;
+            padding: 25px;
+            border-radius: 15px;
+        }
+
+        .issue:hover {
+            border-color: #00ff88;
+        }
+
+        .issue h2 {
+            color: #00ff88;
+            margin-bottom: 12px;
+        }
+
+        .issue p {
+            color: #999;
+            line-height: 1.6;
+            margin-bottom: 8px;
+        }
+
+        .status {
+            display: inline-block;
+            margin-top: 12px;
+            padding: 7px 12px;
+            border-radius: 20px;
+            background: #173326;
+            color: #00ff88;
+            font-size: 12px;
+        }
+
+        footer {
+            margin-top: 50px;
+            padding: 22px;
+            text-align: center;
+            color: #777;
+            background: #090909;
+            border-top: 1px solid #222;
+        }
+
+        @media (max-width: 700px) {
+            nav {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .issues-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .page {
+                padding: 30px 5%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav>
+        <div class="logo">CampusMate</div>
+
+        <div class="nav-links">
+            <a href="/dashboard">Dashboard</a>
+            <a href="/events">Events</a>
+            <a href="/notices">Notices</a>
+            <a href="/profile">Profile</a>
+            <a href="{{ url_for('logout') }}" class="logout">Logout</a>
+        </div>
+    </nav>
+
+    <main class="page">
+
+        <div class="header">
+            <h1>Campus <span>Issues</span></h1>
+            <p>Report campus problems and track their progress.</p>
+        </div>
+
+        <div class="report-box">
+
+            <h2>Report an Issue</h2>
+
+            <form action="/issues/add" method="POST">
+
+                <div class="form-group">
+                    <label>Issue Title</label>
+
+                    <input
+                        type="text"
+                        name="title"
+                        placeholder="Example: Broken classroom light"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label>Category</label>
+
+                    <select name="category" required>
+                        <option value="">Select Category</option>
+                        <option value="Electrical">Electrical</option>
+                        <option value="Cleaning">Cleaning</option>
+                        <option value="Internet">Internet</option>
+                        <option value="Furniture">Furniture</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Location</label>
+
+                    <input
+                        type="text"
+                        name="location"
+                        placeholder="Example: Room 402"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label>Description</label>
+
+                    <textarea
+                        name="description"
+                        placeholder="Describe the issue..."
+                        required
+                    ></textarea>
+                </div>
+
+                <button type="submit" class="submit-btn">
+                    Submit Issue
+                </button>
+
+            </form>
+
+        </div>
+
+        <div class="issues-grid">
+
+    {% if issues %}
+
+        {% for issue in issues %}
+
+            <div class="issue">
+
+                <h2>
+                    {{ issue.title }}
+                </h2>
+
+                <p>
+                    <strong>Category:</strong>
+                    {{ issue.category }}
+                </p>
+
+                <p>
+                    <strong>Location:</strong>
+                    {{ issue.location }}
+                </p>
+
+                <p>
+                    {{ issue.description }}
+                </p>
+
+                <span class="status">
+                    {{ issue.status }}
+                </span>
+
+            </div>
+
+        {% endfor %}
+
+    {% else %}
+
+        <div class="issue">
+
+            <h2>No Issues Reported</h2>
+
+            <p>
+                No campus issues have been reported yet.
+            </p>
+
+        </div>
+
+    {% endif %}
+
+</div>
+
+    </main>
+
+    <footer>
+        © 2026 CampusMate. Smart Campus Life Management Platform.
+    </footer>
+
+</body>
+</html>

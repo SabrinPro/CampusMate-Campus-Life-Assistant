@@ -1,0 +1,241 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Club | CampusMate</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #071f1d;
+            color: #ffffff;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 92%;
+            max-width: 1000px;
+            margin: 30px auto;
+        }
+
+        .topbar {
+            background: #0d2d29;
+            padding: 16px 20px;
+            border-radius: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 18px;
+            border: 1px solid #214641;
+        }
+
+        .topbar h1 {
+            font-size: 22px;
+        }
+
+        .back-btn {
+            text-decoration: none;
+            background: #66ef20;
+            color: #082523;
+            padding: 8px 13px;
+            border-radius: 7px;
+            font-weight: bold;
+            font-size: 12px;
+        }
+
+        .back-btn:hover {
+            background: #9cff5d;
+        }
+
+        .card {
+            background: #0d2d29;
+            border: 1px solid #214641;
+            border-radius: 12px;
+            padding: 20px;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .card h2 {
+            font-size: 20px;
+            margin-bottom: 18px;
+        }
+
+        .form-group {
+            margin-bottom: 14px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 12px;
+            font-weight: bold;
+            color: #d7e8e2;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #355853;
+            border-radius: 7px;
+            background: #071f1d;
+            color: #ffffff;
+            font-size: 12px;
+            outline: none;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            border-color: #66ef20;
+            box-shadow: 0 0 0 3px rgba(102, 239, 32, 0.10);
+        }
+
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 8px;
+            margin-top: 18px;
+        }
+
+        .save-btn,
+        .cancel-btn {
+            text-decoration: none;
+            padding: 9px 14px;
+            border-radius: 7px;
+            font-size: 12px;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+        }
+
+        .save-btn {
+            background: #66ef20;
+            color: #082523;
+        }
+
+        .save-btn:hover {
+            background: #9cff5d;
+        }
+
+        .cancel-btn {
+            background: #153b37;
+            color: #ffffff;
+            border: 1px solid #28534d;
+        }
+
+        .cancel-btn:hover {
+            background: #1b4943;
+        }
+
+        @media (max-width: 700px) {
+            .topbar {
+                flex-direction: column;
+                gap: 12px;
+                align-items: flex-start;
+            }
+
+            .card {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="topbar">
+
+        <h1>Edit Club</h1>
+
+        <a
+            href="{{ url_for('admin_clubs') }}"
+            class="back-btn"
+        >
+            ← Back to Clubs
+        </a>
+
+    </div>
+
+
+    <div class="card">
+
+        <h2>Update Club Information</h2>
+
+        <form
+            action="{{ url_for('admin_edit_club', club_id=club.id) }}"
+            method="POST"
+        >
+
+            <div class="form-group">
+
+                <label for="name">
+                    Club Name
+                </label>
+
+                <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    value="{{ club.name }}"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="description">
+                    Club Description
+                </label>
+
+                <textarea
+                    id="description"
+                    name="description"
+                    required
+                >{{ club.description }}</textarea>
+
+            </div>
+
+
+            <div class="buttons">
+
+                <button
+                    type="submit"
+                    class="save-btn"
+                >
+                    Save Changes
+                </button>
+
+                <a
+                    href="{{ url_for('admin_clubs') }}"
+                    class="cancel-btn"
+                >
+                    Cancel
+                </a>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+</body>
+</html>

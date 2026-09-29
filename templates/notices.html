@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CampusMate - Notices</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #050505;
+            color: white;
+        }
+
+        nav {
+            background: #0a0a0a;
+            border-bottom: 1px solid #222;
+            padding: 18px 7%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            color: #00ff88;
+            font-size: 27px;
+            font-weight: bold;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .nav-links a:hover {
+            color: #00ff88;
+        }
+
+        .logout {
+            border: 1px solid #00ff88;
+            color: #00ff88 !important;
+            padding: 9px 16px;
+            border-radius: 7px;
+        }
+
+        .page {
+            padding: 45px 7%;
+        }
+
+        .header {
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 38px;
+            margin-bottom: 10px;
+        }
+
+        .header h1 span {
+            color: #00ff88;
+        }
+
+        .header p {
+            color: #999;
+        }
+
+        .search {
+            width: 100%;
+            padding: 14px;
+            background: #111;
+            border: 1px solid #292929;
+            border-radius: 8px;
+            color: white;
+            outline: none;
+            margin-bottom: 30px;
+        }
+
+        .search:focus {
+            border-color: #00ff88;
+        }
+
+        .notice {
+            background: #101010;
+            border: 1px solid #242424;
+            border-left: 4px solid #00ff88;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 18px;
+        }
+
+        .notice:hover {
+            border-color: #00ff88;
+        }
+
+        .notice h2 {
+            margin-bottom: 10px;
+        }
+
+        .notice p {
+            color: #aaa;
+            line-height: 1.6;
+        }
+
+        .notice-info {
+            margin-top: 15px;
+            color: #00ff88;
+            font-size: 13px;
+        }
+
+        .priority {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 5px 10px;
+            border-radius: 20px;
+            background: #173326;
+            color: #00ff88;
+            font-size: 12px;
+        }
+
+        footer {
+            margin-top: 50px;
+            padding: 22px;
+            text-align: center;
+            color: #777;
+            background: #090909;
+            border-top: 1px solid #222;
+        }
+
+        @media (max-width: 700px) {
+            nav {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .page {
+                padding: 30px 5%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav>
+        <div class="logo">CampusMate</div>
+
+        <div class="nav-links">
+            <a href="/dashboard">Dashboard</a>
+            <a href="/events">Events</a>
+            <a href="/notices">Notices</a>
+            <a href="/profile">Profile</a>
+            <a href="{{ url_for('logout') }}" class="logout">Logout</a>
+        </div>
+    </nav>
+
+    <main class="page">
+
+        <div class="header">
+            <h1>Campus <span>Notices</span></h1>
+            <p>Stay updated with the latest university announcements.</p>
+        </div>
+
+        <input
+            type="text"
+            class="search"
+            id="searchBox"
+            placeholder="Search notices..."
+        >
+
+        <div id="noticeList">
+
+    {% for notice in notices %}
+
+    <div class="notice">
+
+        <h2>{{ notice.title }}</h2>
+
+        <p>
+            {{ notice.content }}
+        </p>
+
+        <div class="notice-info">
+            Published: {{ notice.date_published.strftime('%B %d, %Y') }}
+            | Category: {{ notice.category }}
+        </div>
+
+        <span class="priority">
+            {{ notice.priority }}
+        </span>
+
+    </div>
+
+    {% else %}
+
+    <div class="notice">
+        <h2>No Notices</h2>
+
+        <p>
+            There are no published notices right now.
+        </p>
+    </div>
+
+    {% endfor %}
+
+</div>
+
+        </div>
+
+    </main>
+
+    <footer>
+        © 2026 CampusMate. Smart Campus Life Management Platform.
+    </footer>
+
+    <script>
+        const searchBox = document.getElementById("searchBox");
+        const notices = document.querySelectorAll(".notice");
+
+        searchBox.addEventListener("keyup", function() {
+            const searchValue = searchBox.value.toLowerCase();
+
+            notices.forEach(function(notice) {
+                const text = notice.textContent.toLowerCase();
+
+                if (text.includes(searchValue)) {
+                    notice.style.display = "block";
+                } else {
+                    notice.style.display = "none";
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>

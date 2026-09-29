@@ -1,0 +1,431 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Clubs | CampusMate</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #071f1d;
+            color: #ffffff;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 92%;
+            max-width: 1000px;
+            margin: 30px auto;
+        }
+
+        /* Top Bar */
+
+        .topbar {
+            background: #0d2d29;
+            color: #ffffff;
+            padding: 16px 20px;
+            border-radius: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 18px;
+            border: 1px solid #214641;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.20);
+        }
+
+        .topbar h1 {
+            font-size: 22px;
+            font-weight: 700;
+        }
+
+        .back-btn {
+            text-decoration: none;
+            background: #66ef20;
+            color: #082523;
+            padding: 8px 13px;
+            border-radius: 7px;
+            font-weight: bold;
+            font-size: 12px;
+        }
+
+        .back-btn:hover {
+            background: #9cff5d;
+        }
+
+        /* Main Cards */
+
+        .card {
+            background: #0d2d29;
+            border-radius: 12px;
+            padding: 18px;
+            margin-bottom: 18px;
+            border: 1px solid #214641;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
+        }
+
+        .card h2 {
+            margin-bottom: 15px;
+            font-size: 20px;
+            color: #ffffff;
+        }
+
+        /* Form */
+
+        .form-group {
+            margin-bottom: 12px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: bold;
+            font-size: 12px;
+            color: #d7e8e2;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #355853;
+            border-radius: 7px;
+            font-size: 12px;
+            outline: none;
+            background: #071f1d;
+            color: #ffffff;
+        }
+
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: #6f8580;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            border-color: #66ef20;
+            box-shadow: 0 0 0 3px rgba(102, 239, 32, 0.10);
+        }
+
+        .form-group textarea {
+            min-height: 90px;
+            resize: vertical;
+        }
+
+        .add-btn {
+            background: #66ef20;
+            color: #082523;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 7px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 12px;
+            transition: 0.2s;
+        }
+
+        .add-btn:hover {
+            background: #9cff5d;
+            transform: translateY(-1px);
+        }
+
+        /* Club List */
+
+        .club-list {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .club-card {
+            background: #082523;
+            border: 1px solid #214641;
+            border-radius: 10px;
+            padding: 16px;
+            transition: 0.2s;
+        }
+
+        .club-card:hover {
+            border-color: #66ef20;
+            transform: translateY(-2px);
+        }
+
+        .club-card h3 {
+            font-size: 17px;
+            margin-bottom: 7px;
+            color: #ffffff;
+        }
+
+        .club-card p {
+            color: #9bb2ad;
+            font-size: 11px;
+            line-height: 1.5;
+            margin-bottom: 10px;
+        }
+
+        .members {
+            font-size: 11px;
+            font-weight: bold;
+            margin-bottom: 11px;
+            color: #66ef20;
+        }
+
+        /* Buttons */
+
+        .actions {
+            display: flex;
+            gap: 6px;
+        }
+
+        .edit-btn,
+        .delete-btn {
+            text-decoration: none;
+            padding: 6px 10px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+
+        .edit-btn {
+            background: #153b37;
+            color: #66ef20;
+            border: 1px solid #28534d;
+        }
+
+        .edit-btn:hover {
+            background: #1b4943;
+        }
+
+        .delete-btn {
+            background: #412525;
+            color: #ff7c7c;
+            border: 1px solid #643636;
+        }
+
+        .delete-btn:hover {
+            background: #542b2b;
+        }
+
+        /* Empty State */
+
+        .empty {
+            text-align: center;
+            color: #79918d;
+            padding: 22px;
+            border: 1px dashed #355853;
+            border-radius: 8px;
+            background: #071f1d;
+            font-size: 11px;
+        }
+
+        /* Flash Message */
+
+        .flash {
+            background: #143b37;
+            color: #9cff5d;
+            padding: 11px 13px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border-left: 4px solid #66ef20;
+            font-size: 12px;
+        }
+
+        /* Mobile */
+
+        @media (max-width: 700px) {
+
+            .container {
+                width: 94%;
+                margin: 20px auto;
+            }
+
+            .topbar {
+                flex-direction: column;
+                gap: 12px;
+                align-items: flex-start;
+            }
+
+            .topbar h1 {
+                font-size: 20px;
+            }
+
+            .club-list {
+                grid-template-columns: 1fr;
+            }
+
+            .card {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- Top Bar -->
+
+    <div class="topbar">
+
+        <h1>CampusMate Clubs</h1>
+
+        <a
+            href="{{ url_for('admin_dashboard') }}"
+            class="back-btn"
+        >
+            ← Admin Dashboard
+        </a>
+
+    </div>
+
+
+    <!-- Flash Messages -->
+
+    {% with messages = get_flashed_messages() %}
+
+        {% if messages %}
+
+            {% for message in messages %}
+
+                <div class="flash">
+                    {{ message }}
+                </div>
+
+            {% endfor %}
+
+        {% endif %}
+
+    {% endwith %}
+
+
+    <!-- Add Club -->
+
+    <div class="card">
+
+        <h2>Add New Club</h2>
+
+        <form
+            action="{{ url_for('admin_add_club') }}"
+            method="POST"
+        >
+
+            <div class="form-group">
+
+                <label for="name">
+                    Club Name
+                </label>
+
+                <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    placeholder="Example: AI Club"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="description">
+                    Club Description
+                </label>
+
+                <textarea
+                    id="description"
+                    name="description"
+                    placeholder="Write a short description about the club..."
+                    required
+                ></textarea>
+
+            </div>
+
+
+            <button
+                type="submit"
+                class="add-btn"
+            >
+                + Add Club
+            </button>
+
+        </form>
+
+    </div>
+
+
+    <!-- Existing Clubs -->
+
+    <div class="card">
+
+        <h2>Existing Clubs</h2>
+
+        {% if clubs %}
+
+            <div class="club-list">
+
+                {% for club in clubs %}
+
+                    <div class="club-card">
+
+                        <h3>
+                            {{ club.name }}
+                        </h3>
+
+                        <p>
+                            {{ club.description }}
+                        </p>
+
+                        <div class="members">
+                            Members: {{ club.members_count }}
+                        </div>
+
+                        <div class="actions">
+
+                            <a
+                                href="{{ url_for('admin_edit_club', club_id=club.id) }}"
+                                class="edit-btn"
+                            >
+                                Edit
+                            </a>
+
+                            <a
+                                href="{{ url_for('admin_delete_club', club_id=club.id) }}"
+                                class="delete-btn"
+                                onclick="return confirm('Are you sure you want to delete this club?');"
+                            >
+                                Delete
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+        {% else %}
+
+            <div class="empty">
+                No clubs have been created yet.
+            </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+</body>
+</html>
+
