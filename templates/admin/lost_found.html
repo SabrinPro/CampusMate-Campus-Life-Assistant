@@ -167,12 +167,9 @@
 
                             <br>
 
-                            <a
-                                href="/admin/lost-found/resolve/{{ item.id }}"
-                                class="resolve-btn"
-                            >
-                                Mark as Resolved
-                            </a>
+                            <form method="POST" action="/admin/lost-found/resolve/{{ item.id }}" style="display:inline">
+                                <button type="submit" class="resolve-btn">Mark as Resolved</button>
+                            </form>
 
                         {% else %}
 

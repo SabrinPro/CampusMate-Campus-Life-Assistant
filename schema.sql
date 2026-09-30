@@ -10,6 +10,16 @@ CREATE TABLE IF NOT EXISTS users (
     is_admin BOOLEAN DEFAULT FALSE
 );
 
+-- Added: was missing from original schema but used by app.py LoginLog model
+CREATE TABLE IF NOT EXISTS login_logs (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    email VARCHAR(150) NOT NULL,
+    action VARCHAR(20) NOT NULL,
+    action_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
 CREATE TABLE IF NOT EXISTS events (
     id INT AUTO_INCREMENT PRIMARY KEY,
     title VARCHAR(180) NOT NULL,
@@ -64,12 +74,13 @@ CREATE TABLE IF NOT EXISTS study_groups (
     FOREIGN KEY (created_by) REFERENCES users(id) ON DELETE SET NULL
 );
 
+-- Fixed: ENUM values changed to match Python model (Pending/Approved/Rejected)
 CREATE TABLE IF NOT EXISTS group_memberships (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
     group_id INT NOT NULL,
     join_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    status ENUM('pending','approved','rejected') DEFAULT 'pending',
+    status ENUM('Pending','Approved','Rejected') DEFAULT 'Pending',
     UNIQUE KEY unique_group_request (user_id, group_id),
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
     FOREIGN KEY (group_id) REFERENCES study_groups(id) ON DELETE CASCADE
@@ -98,13 +109,14 @@ CREATE TABLE IF NOT EXISTS campus_issues (
     FOREIGN KEY (created_by) REFERENCES users(id) ON DELETE CASCADE
 );
 
+-- Fixed: status ENUM updated to include 'Active' (matches app.py default)
 CREATE TABLE IF NOT EXISTS lost_found (
     id INT AUTO_INCREMENT PRIMARY KEY,
     item_name VARCHAR(160) NOT NULL,
     description TEXT NOT NULL,
     location VARCHAR(180) NOT NULL,
     item_type ENUM('Lost','Found') NOT NULL,
-    status ENUM('Open','Resolved') DEFAULT 'Open',
+    status ENUM('Active','Resolved') DEFAULT 'Active',
     posted_by INT NOT NULL,
     posted_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (posted_by) REFERENCES users(id) ON DELETE CASCADE
@@ -115,7 +127,7 @@ CREATE TABLE IF NOT EXISTS notifications (
     user_id INT NOT NULL,
     title VARCHAR(180) NOT NULL,
     message TEXT NOT NULL,
-    kind VARCHAR(30) DEFAULT 'info',
+    kind VARCHAR(50) DEFAULT 'info',
     is_read BOOLEAN DEFAULT FALSE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE

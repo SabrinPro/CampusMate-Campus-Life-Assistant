@@ -35,6 +35,14 @@
             <p>Manage CampusMate from one place.</p>
         </div>
 
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="flash">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
 
         <div class="stats-grid">
 
@@ -142,24 +150,24 @@
             </a>
 
             <a href="/admin/issues" class="admin-card">
-                <h3>🛠 Issues</h3>
+                <h3>🛠️ Campus Issues</h3>
                 <p>Update issue status and responses.</p>
             </a>
 
             <a href="/admin/resources" class="admin-card">
-    <h3>📚 Resources</h3>
-    <p>Add and manage study resources.</p>
-</a>
+                <h3>📚 Resources</h3>
+                <p>Add and manage study resources.</p>
+            </a>
 
-<a href="/admin/issues" class="admin-card">
-    <h3>🛠️ Campus Issues</h3>
-    <p>View and manage campus issues.</p>
-</a>
+            <a href="/admin/lost-found" class="admin-card">
+                <h3>🔎 Lost & Found</h3>
+                <p>View and manage lost and found reports.</p>
+            </a>
 
-<a href="/admin/lost-found" class="admin-card">
-    <h3>🔎 Lost & Found</h3>
-    <p>View and manage lost and found reports.</p>
-</a>
+            <a href="/admin/clubs" class="admin-card">
+                <h3>🎯 Clubs</h3>
+                <p>Create and manage campus clubs.</p>
+            </a>
 
         </div>
 

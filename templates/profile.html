@@ -182,6 +182,14 @@
 
         <div class="profile-card">
 
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="flash">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
             <div class="profile-icon">
                 {{ session.get('user_name', 'S')[0]|upper }}
             </div>
@@ -207,6 +215,16 @@
                         name="email"
                         value="{{ session.get('user_email', '') }}"
                         disabled
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label>Current Password <small>(required only if changing password)</small></label>
+
+                    <input
+                        type="password"
+                        name="current_password"
+                        placeholder="Enter current password to change it"
                     >
                 </div>
 
