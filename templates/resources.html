@@ -164,7 +164,31 @@
 
         <div class="header">
             <h1>Study <span>Resources</span></h1>
-            <p>Browse useful academic materials by subject.</p>
+            <p>Browse useful academic materials by subject or share your own notes.</p>
+        </div>
+
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div style="margin-bottom: 20px;">
+                    {% for message in messages %}
+                        <div style="background: #111; border-left: 4px solid #00ff88; padding: 12px; margin-bottom: 10px; border-radius: 4px;">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <div style="background: #101010; border: 1px solid #242424; padding: 25px; border-radius: 15px; margin-bottom: 30px;">
+            <h2 style="color: #00ff88; margin-bottom: 15px; font-size: 20px;">Share a Class Note (PDF)</h2>
+            <form action="{{ url_for('upload_resource') }}" method="POST" enctype="multipart/form-data" style="display: flex; flex-direction: column; gap: 15px;">
+                <input type="text" name="title" placeholder="Note Title (e.g., Chapter 1 Summary)" required style="padding: 12px; background: #050505; border: 1px solid #242424; color: white; border-radius: 7px; font-size: 14px; outline: none;">
+                <input type="text" name="subject" placeholder="Subject (e.g., Physics)" required style="padding: 12px; background: #050505; border: 1px solid #242424; color: white; border-radius: 7px; font-size: 14px; outline: none;">
+                <textarea name="description" placeholder="Description..." required style="padding: 12px; background: #050505; border: 1px solid #242424; color: white; border-radius: 7px; font-size: 14px; resize: vertical; min-height: 80px; outline: none;"></textarea>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <label style="color: #999; font-size: 14px;">Upload PDF:</label>
+                    <input type="file" name="note_file" accept=".pdf" required style="color: #ccc; font-size: 14px;">
+                </div>
+                <button type="submit" class="view-btn" style="border: none; cursor: pointer; width: fit-content; padding: 12px 24px;">Upload Note</button>
+            </form>
         </div>
 
         <div class="resource-list">

@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.utils import secure_filename
 from dotenv import load_dotenv
 import os
 from datetime import datetime
@@ -15,6 +16,13 @@ app = Flask(__name__)
 # ---------------------------------------------------------------------------
 
 app.config["SECRET_KEY"] = os.getenv("SECRET_KEY", "campusmate-secret-key")
+app.config["UPLOAD_FOLDER"] = os.path.join('static', 'uploads', 'notes')
+os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
+ALLOWED_EXTENSIONS = {'pdf'}
+
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
 
 # Railway injects DATABASE_URL for MySQL add-on (format: mysql://...)
 # Fall back to individual vars for local development.
@@ -483,6 +491,47 @@ def resources():
         "resources.html",
         resources=Resource.query.order_by(Resource.id.desc()).all()
     )
+
+@app.route("/resources/upload", methods=["POST"])
+@login_required
+def upload_resource():
+    title = request.form.get("title")
+    subject = request.form.get("subject")
+    description = request.form.get("description")
+    
+    if "note_file" not in request.files:
+        flash("No file part provided.")
+        return redirect(url_for("resources"))
+        
+    file = request.files["note_file"]
+    if file.filename == "":
+        flash("No selected file.")
+        return redirect(url_for("resources"))
+        
+    if file and allowed_file(file.filename):
+        filename = secure_filename(file.filename)
+        timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
+        filename = f"{timestamp}_{filename}"
+        file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        file.save(file_path)
+        
+        resource_url = url_for('static', filename=f"uploads/notes/{filename}")
+        
+        new_resource = Resource(
+            title=title,
+            subject=subject,
+            description=description,
+            resource_url=resource_url,
+            created_by=session.get("user_id")
+        )
+        db.session.add(new_resource)
+        db.session.commit()
+        flash("Resource shared successfully.")
+    else:
+        flash("Invalid file format. Only PDF is allowed.")
+        
+    return redirect(url_for("resources"))
+
 
 
 # ---------------------------------------------------------------------------
